@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+
+  roles:
+    - { role: peru.vmwaretools, when: ansible_virtualization_type  == "VMware" }
+    - { role: vhubertngi.ansible_role_virtualbox_guest, when: ansible_virtualization_type  == "virtualbox"}
+
+  vars:
+      virtualbox_version: 5.2.12
+      virtualbox_iso: /home/vagrant/VBoxGuestAdditions.iso
+
+  tasks:
+    - apt: "name={{ item }} state=installed"
+      with_items:
+        - git
+        - wget
+        - curl
+        - vim

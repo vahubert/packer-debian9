@@ -1,0 +1,199 @@
+{
+  "variables": [
+    {
+      "iso_url": "http://debian.univ-lorraine.fr/debian-cd/9.4.0/amd64/iso-cd/debian-9.4.0-amd64-xfce-CD-1.iso",
+      "iso_checksum_type": "sha512",
+      "iso_checksum": "a30c2becb0eafd7e71124829238d82b183f6c3c6a92e55c26780207da40203da67f2c867db2b2ef900f320d1d922d8dd5b6156d1d454f76043af0dddab477008",
+      "cloud_token": "",
+      "version": ""
+    }
+  ],
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "debian-installer=fr_FR.UTF-8 <wait>",
+        "auto <wait>",
+        "locale=fr_FR.UTF-8 <wait>",
+        "kbd-chooser/method=fr <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=fr <wait>",
+        "grub-installer/bootdev=/dev/sda <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "5s",
+      "disk_size": 16000,
+      "guest_os_type": "otherlinux-64",
+      "headless": false,
+      "http_directory": "http",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+
+
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s",
+      "tools_upload_flavor": "linux",
+      "vm_name": "packer-debian9-amd64",
+      "vmx_remove_ethernet_interfaces": "true",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "ethernet0.pciSlotNumber": "32",
+        "memsize": "2048",
+        "numvcpus": "4"
+      }
+    },
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "debian-installer=fr_FR.UTF-8 <wait>",
+        "auto <wait>",
+        "locale=fr_FR.UTF-8 <wait>",
+        "kbd-chooser/method=fr <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=fr <wait>",
+        "grub-installer/bootdev=/dev/sda <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "5s",
+      "disk_size": 16000,
+      "guest_os_type": "Debian_64",
+      "headless": false,
+      "http_directory": "http",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+
+
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s",
+
+      "vm_name": "packer-debian9-amd64",
+      "virtualbox_version_file": ".vbox_version",
+      "vboxmanage": [
+            [
+              "modifyvm",
+              "{{.Name}}",
+              "--memory",
+              "4096"
+            ],
+            [
+              "modifyvm",
+              "{{.Name}}",
+              "--cpus",
+              "4"
+            ]
+          ]
+    },
+    {
+      "name": "hyperv1",
+      "type": "hyperv-iso",
+      "vm_name": "packer-debian9-x86-64",
+      "temp_path": ".",
+      "iso_url": "{{ user `iso_url` }}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "disk_size": "16000",
+      "disk_block_size": "1",
+      "communicator": "ssh",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_timeout" : "4h",
+      "shutdown_timeout": "30m",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "ram_size": 2048,
+      "enable_dynamic_memory": "true",
+      "cpu": 2,
+      "generation": 1,
+      "http_directory": "http",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-hyperv1.cfg <wait>",
+        "debian-installer=fr_FR.UTF-8 <wait>",
+        "auto <wait>",
+        "locale=fr_FR.UTF-8 <wait>",
+        "kbd-chooser/method=fr <wait>",
+        "keyboard-configuration/xkb-keymap=fr <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=fr <wait>",
+        "grub-installer/bootdev=/dev/sda <wait>",
+        "<enter><wait>"
+      ],
+      "guest_additions_mode":"disable",
+      "enable_secure_boot": false,
+      "headless": false
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/ansible.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/setup.sh"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "ansible/main.yml",
+      "galaxy_file": "requirements.yml"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/vagrant.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/cleanup.sh"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "output": "builds/{{.Provider}}-debian9.box",
+        "vagrantfile_template": "Vagrantfile.tpl"
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "vhubert/debian9",
+        "access_token": "{{user `cloud_token`}}",
+        "version": "{{user `version`}}"
+      }
+    ]
+  ]
+}

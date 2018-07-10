@@ -1,0 +1,11 @@
+.DS_Store
+packer_cache/*
+packerhv*/
+builds/*
+roles/
+packerlog*
+variables*
+*.box
+iso/*
+output-virtualbox-iso/*
+.vagrant/*

@@ -1,0 +1,3 @@
+---
+- src: peru.vmwaretools
+- src: vhubertngi.ansible_role_virtualbox_guest
